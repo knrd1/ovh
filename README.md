@@ -5,7 +5,8 @@ This should work with any other ISO, however I tested only with CentOS 8.
 
 ### 2) Connect to Rescue Mode via SSH and make sure your vdisk is unmounted:
 
-```lsblk
+```
+lsblk
 umount /dev/sdb1
 ```
 
