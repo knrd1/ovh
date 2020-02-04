@@ -3,11 +3,15 @@ This should work with any other ISO, however I tested only with CentOS 8.
 
 ### 1) Reboot VPS in rescue mode
 
-### 2) Connect to Rescue Mode via SSH and make sure your vdisk is unmounted:
+### 2) Connect to Rescue Mode via SSH, unmount /dev/sdb1 and remove all /dev/sdbX partitions:
 
 ```
 lsblk
 umount /dev/sdb1
+fdisk -u /dev/sdb
+> d
+> d
+> w
 ```
 
 ### 3) Install required packages:
@@ -23,7 +27,7 @@ umount /dev/sdb1
 ### 5) Run qemu (replace ISO location and vdisk name if required):
 
 ```
-# qemu-system-x86_64 -netdev type=user,id=mynet0 -device virtio-net-pci,netdev=mynet0 -m 2048 -localtime -enable-kvm -drive index=0,media=disk,if=virtio,file=/dev/sdb1 -vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -daemonize -cdrom /tmp/CentOS-8-x86_64-1905-boot.iso -boot d
+# qemu-system-x86_64 -netdev type=user,id=mynet0 -device virtio-net-pci,netdev=mynet0 -m 2048 -localtime -enable-kvm -drive index=0,media=disk,if=virtio,file=/dev/sdb -vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing -daemonize -cdrom /tmp/CentOS-8-x86_64-1905-boot.iso -boot d
 ```
 ### 6) Assuming your workstation is running Linux, forward a port through an SSH tunnel to your VPS:
 
@@ -40,7 +44,7 @@ umount /dev/sdb1
 
 Note: Since you downloaded Minimal/NetInst image, you need to configure source installation.
 For CentOS 8 I used:
-> a) http,
+> a) http
 > b) repository URL
 > c) mirror.centos.org/centos/8/BaseOS/x86_64/os/
 
